@@ -43,10 +43,12 @@ namespace SkyStore.Services
 
             return true;
         }
+
         public bool userExists(string username)
         {
             return (_context.Users.FirstOrDefault(u=>u.Username == username)!=null);
         }
+
         public string LoginUser(UserLogin request)
         {
             // Verificar que el usuario existe y que la contraseña es correcta
@@ -66,8 +68,6 @@ namespace SkyStore.Services
             // Generar y retornar el token JWT
            return GenerateJwtToken(user);
         }
-
-
 
         private string GenerateJwtToken(User user)
         {

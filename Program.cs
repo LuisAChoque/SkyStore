@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar JWT
+// Configuración JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
@@ -46,13 +46,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 
-// ✅ Agregar configuración de Swagger con autenticación JWT
+// Configuración de Swagger con autenticación JWT
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
 
-    // 🔹 Agregar botón para ingresar el token en Swagger
+    // Botón para ingresar el token en Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -63,7 +63,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Ingrese el token JWT en este formato: Bearer {token}"
     });
 
-    // 🔹 Hacer que Swagger use el token ingresado en las peticiones
+    // Hacer que Swagger use el token ingresado en las peticiones
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {

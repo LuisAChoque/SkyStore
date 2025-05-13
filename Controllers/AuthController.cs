@@ -15,49 +15,49 @@ using SkyStore.Services;
 using SkyStore.Settings;
 
 namespace SkyStore.Controllers {
-[Route("api/[controller]")]
-[ApiController]
-public class AuthController : ControllerBase
-{
-    private readonly IUserService _userService;
-    public AuthController(IUserService userService)
+    
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
     {
-        _userService = userService;
+        private readonly IUserService _userService;
+        public AuthController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        // Endpoint de registro
+        [HttpPost("register")]
+        public IActionResult Register(UserRegister request)
+        {
+            try
+            {
+                _userService.RegisterUser(request);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok("User registered");
+        }
+
+        // Endpoint de login
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] UserLogin request)
+        {
+            string token;
+            try
+            {
+                token = _userService.LoginUser(request);
+            }
+            catch (Exception e)
+            {
+                return Unauthorized(e.Message);
+            }
+
+            return Ok(new { Token = token });
+
+        }
     }
-
-    // Endpoint de registro
-    [HttpPost("register")]
-    public IActionResult Register(UserRegister request)
-    {
-        try
-        {
-            _userService.RegisterUser(request);
-        }
-        catch (Exception e)
-        {
-
-            return BadRequest(e.Message);
-        }
-
-        return Ok("User registered");
-    }
-
-    // Endpoint de login
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] UserLogin request)
-    {
-        string token;
-        try
-        {
-            token = _userService.LoginUser(request);
-        }
-        catch (Exception e)
-        {
-            return Unauthorized(e.Message);
-        }
-
-        return Ok(new { Token = token });
-
-    }
-}
 }
